@@ -1,0 +1,33 @@
+    <div class="table-responsive">
+  <table class="table table-striped">
+    <thead>
+      <tr>
+        <th>ID</th>
+        <th>Nombre</th>
+        <th>Descripción</th>
+        <th>Precio</th>
+        <th>Stock</th>
+        <th>Categoria</th>
+        <th>Acciones</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngIf="!products || products.length === 0">
+        <td colspan="7" class="text-center">No products found</td>
+      </tr>
+
+      <tr *ngFor="let p of products; trackBy: trackById">
+        <td>{{ p.id }}</td>
+        <td>{{ p.nombre }}</td>
+        <td>{{ p.descripcion }}</td>
+        <td>{{ p.precio }}</td>
+        <td>{{ p.cantidadStock }}</td>
+        <td>{{ categoryNameFor(p) }}</td>
+        <td>
+          <button *ngIf="showActions" (click)="callEditMethod.emit(p)" class="btn btn-sm btn-warning me-2" type="button">Edit</button>
+          <button *ngIf="showActions" (click)="callDeleteMethod.emit(p)" class="btn btn-sm btn-danger" type="button">Delete</button>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>
