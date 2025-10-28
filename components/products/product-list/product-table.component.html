@@ -1,4 +1,4 @@
-<div class="table-responsive">
+    <div class="table-responsive">
   <table class="table table-striped">
     <thead>
       <tr>
@@ -24,8 +24,8 @@
         <td>{{ p.cantidadStock }}</td>
         <td>{{ categoryNameFor(p) }}</td>
         <td>
-          <button (click)="callEditMethod.emit(p)" class="btn btn-sm btn-warning me-2" type="button">Edit</button>
-          <button *ngIf="areActionsAvailable" (click)="callDeleteMethod.emit(p)" class="btn btn-sm btn-danger" type="button">Delete</button>
+          <button *ngIf="showActions" (click)="callEditMethod.emit(p)" class="btn btn-sm btn-warning me-2" type="button">Edit</button>
+          <button *ngIf="showActions" (click)="callDeleteMethod.emit(p)" class="btn btn-sm btn-danger" type="button">Delete</button>
         </td>
       </tr>
     </tbody>
