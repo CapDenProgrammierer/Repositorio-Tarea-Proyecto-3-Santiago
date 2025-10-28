@@ -1,5 +1,6 @@
 package com.project.demo.rest.producto;
 
+import com.project.demo.dto.producto.ProductoDTO;
 import com.project.demo.logic.entity.categoria.Categoria;
 import com.project.demo.logic.entity.categoria.CategoriaRepository;
 import com.project.demo.logic.entity.http.GlobalResponseHandler;
@@ -18,6 +19,7 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/productos")
@@ -27,6 +29,20 @@ public class ProductoRestController {
 
     @Autowired
     private CategoriaRepository categoriaRepository;
+
+    private ProductoDTO toDto(Producto p) {
+        ProductoDTO dto = new ProductoDTO();
+        dto.setId(p.getId());
+        dto.setNombre(p.getNombre());
+        dto.setDescripcion(p.getDescripcion());
+        dto.setPrecio(p.getPrecio());
+        dto.setCantidadStock(p.getCantidadStock());
+        if (p.getCategoria() != null) {
+            dto.setCategoriaId(p.getCategoria().getId());
+            dto.setCategoriaNombre(p.getCategoria().getNombre());
+        }
+        return dto;
+    }
 
     @GetMapping
     @PreAuthorize("isAuthenticated()")
@@ -43,8 +59,12 @@ public class ProductoRestController {
             meta.setPageNumber(productosPage.getNumber() + 1);
             meta.setPageSize(productosPage.getSize());
 
+        var dtoList = productosPage.getContent().stream()
+                .map(this::toDto)
+                .collect(Collectors.toList());
+
             return new GlobalResponseHandler().handleResponse("Productos retornados successfully",
-                    productosPage.getContent(), HttpStatus.OK, meta);
+                    dtoList,  HttpStatus.OK, meta);
     }
 
     @GetMapping("/categorias/{categoriaId}/productos")
