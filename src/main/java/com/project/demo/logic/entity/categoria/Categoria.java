@@ -15,7 +15,7 @@ public class Categoria {
     private Long id;
     private String nombre;
     private String descripcion;
-
+    @JsonIgnore
     @OneToMany(mappedBy = "categoria", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Producto> productos = new ArrayList<Producto>();
 
