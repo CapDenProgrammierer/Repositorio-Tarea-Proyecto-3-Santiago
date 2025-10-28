@@ -1,0 +1,48 @@
+<div class="container-fluid p-4">
+  <div class="row mb-4">
+    <div class="col-12">
+      <h1>Manage Categories</h1>
+    </div>
+  </div>
+
+  <div class="row mb-4">
+    <div class="col-12">
+      <div class="card">
+        <div class="card-body">
+          <app-cathegory-form 
+            [form]="form" 
+            [isEdit]="isEdit"
+            (callSaveMethod)="saveCathegory($event)">
+          </app-cathegory-form>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col-12">
+      <div class="card">
+        <div class="card-body">
+          <h3 class="card-title mb-3">Categories List</h3>
+
+          <!-- Mostrar la tabla del componente hijo solo cuando haya datos -->
+          <app-cathegories-table
+            *ngIf="cathegoryService.cathegories$().length > 0; else noData"
+            [areActionsAvailable]="areActionsAvailable"
+            [cathegories]="cathegoryService.cathegories$()"
+            (callEditMethod)="selectCathegoryToEdit($event)"
+            (callDeleteMethod)="deleteCathegory($event)">
+          </app-cathegories-table>
+
+          <ng-template #noData>
+            <div class="text-center text-muted">No hay categorías aún.</div>
+          </ng-template>
+
+          <div *ngIf="cathegoryService.search.totalPages && cathegoryService.search.totalPages > 1" class="mt-3">
+            <app-pagination [service]="cathegoryService"></app-pagination>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
